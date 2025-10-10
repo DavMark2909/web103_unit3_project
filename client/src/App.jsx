@@ -1,55 +1,21 @@
-import React from 'react'
-import { useRoutes, Link } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Locations from './pages/Locations'
 import LocationEvents from './pages/LocationEvents'
 import Events from './pages/Events'
-import './App.css'
+import Event from './pages/Event'
 
-const App = () => {
-  let element = useRoutes([
-    {
-      path: '/',
-      element: <Locations />
-    },
-    {
-      path: '/echolounge',
-      element: <LocationEvents index={1} />
-    },
-    {
-      path: '/houseofblues',
-      element: <LocationEvents index={2} />
-    },
-    {
-      path: '/pavilion',
-      element: <LocationEvents index={3} />
-    },
-    {
-      path: '/americanairlines',
-      element: <LocationEvents index={4} />
-    },
-    {
-      path: '/events',
-      element: <Events />
-    }
-  ])
 
+function App() {
   return (
-    <div className='app'>
-
-      <header className='main-header'>
-        <h1>UnityGrid Plaza</h1>
-
-        <div className='header-buttons'>
-          <Link to='/' role='button'>Home</Link>
-          <Link to='/events' role='button'>Events</Link>
-        </div>
-      </header>
-
-      <main>
-        {element}
-      </main>
-    </div>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/allLocations" element={<Locations />} />
+        <Route path="/locations/:locationName" element={<LocationEvents />} />
+        <Route path="/events" element={<Events />} />
+        <Route path="/event" element={<Event />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;

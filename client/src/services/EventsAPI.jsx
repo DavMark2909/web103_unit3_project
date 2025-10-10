@@ -1,53 +1,53 @@
-const LOCATION_URL = 'http://localhost:3000';
+const LOCATION_URL = 'http://localhost:3000/events';
 
-export const getAllEvents = async () => {
-    try {
+class EventsAPI {
+    static async getAllEvents() {
+        try {
+            const response = await fetch(`${LOCATION_URL}/`);
 
-        const response = await fetch(`${LOCATION_URL}/events`);
-
-        if (!response.ok) {
+            if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             
             const data = await response.json();
             return data;
-    } catch (error) {
-        console.error('Error fetching locations:', error);
-        throw error;
+        } catch (error) {
+            console.error('Error fetching events:', error);
+            throw error;
+        }
     }
-}
 
-export const getEventsByLocation = async (location) => {
-    try {
+    static async getEventsByLocation(location) {
+        try {
+            const response = await fetch(`${LOCATION_URL}/location/${location}`);
 
-        const response = await fetch(`${LOCATION_URL}/events/location/${location}`);
-
-        if (!response.ok) {
+            if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             
             const data = await response.json();
             return data;
-    } catch (error) {
-        console.error('Error fetching locations:', error);
-        throw error;
+        } catch (error) {
+            console.error('Error fetching events by location:', error);
+            throw error;
+        }
     }
-}
 
+    static async getEventById(id) {
+        try {
+            const response = await fetch(`${LOCATION_URL}/id/${id}`);
 
-export const getEventById = async (id) => {
-    try {
-
-        const response = await fetch(`${LOCATION_URL}/events/id/${id}`);
-
-        if (!response.ok) {
+            if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             
             const data = await response.json();
             return data;
-    } catch (error) {
-        console.error('Error fetching locations:', error);
-        throw error;
+        } catch (error) {
+            console.error('Error fetching event by id:', error);
+            throw error;
+        }
     }
 }
+
+export default EventsAPI;

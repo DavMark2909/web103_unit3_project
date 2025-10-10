@@ -2,19 +2,19 @@ import React, { useState, useEffect } from 'react'
 import LocationsAPI from '../services/LocationsAPI'
 import unitygrid from '../assets/unitygrid.jpg'
 import '../css/Locations.css'
+import { useNavigate } from 'react-router-dom';
 
 const Locations = () => {
 
+    const navigate = useNavigate();
     const [locations, setLocations] = useState([])
-    const [venueNames, setVenueNames] = useState({venue1: '', venue2: '', venue3: '', venue4: ''})
 
     useEffect(() => {
         (async () => {
             try {
                 const locationsData = await LocationsAPI.getAllLocations()
+                console.log(locationsData)
                 setLocations(locationsData)
-
-                setVenueNames({venue1: locationsData[0].name, venue2: locationsData[1].name, venue3: locationsData[2].name, venue4: locationsData[3].name})
                 setListeners()
             }
             catch (error) {
@@ -41,20 +41,28 @@ const Locations = () => {
 
     return (
         <div className='available-locations'>
-            <div id='venue1button' className='venue1-button-overlay'>
-                <button>{venueNames.venue1}</button>
+            {locations.map((location, index) => (
+                <div key={index} className="card">
+                    <h3>{location}</h3>
+                    <button onClick={() => navigate(`/locations/${location}`)}>
+                        View Events at {location}
+                    </button>
+                </div>
+            ))}
+            {/* <div id='venue1button' className='venue1-button-overlay'>
+                <button>{locationNames.location1}</button>
             </div>
 
             <div id='venue2button' className='venue2-button-overlay'>
-                <button>{venueNames.venue2}</button>
+                <button>{locationNames.location2}</button>
             </div>
 
             <div id='venue3button' className='venue3-button-overlay'>
-                <button>{venueNames.venue3}</button>
+                <button>{locationNames.location3}</button>
             </div>
 
             <div id='venue4button' className='venue4-button-overlay'>
-                <button>{venueNames.venue4}</button>
+                <button>{locationNames.location4}</button>
             </div>
 
             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1000.32 500" xmlSpace="preserve">
@@ -75,7 +83,7 @@ const Locations = () => {
 
                 <a href='/americanairlines'><polygon id="venue4" name='venue4' value={4} points="625,291 615,305 608,318 625,338 637,354 622.5,358 673,363.5 751,363.5 793,363.5 
                 769,352 772,347 793,340 806,321 796.8,291 784,269 757,261 730,272 707,281 672,283 "/></a>
-            </svg>
+            </svg> */}
    
         </div>
     )
