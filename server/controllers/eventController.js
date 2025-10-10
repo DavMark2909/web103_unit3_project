@@ -10,11 +10,11 @@ const getMusicEvents = async (req, res) => {
 }
 
 const getMusicEventsByLocation = async (req, res) => {
-    try{
-        const {location} = req.params;
-        const res = await pool.query('SELECT * FROM events WHERE location = $1', [location]);
+    try {
+        const { location } = req.params;
+        const result = await pool.query('SELECT * FROM events WHERE location = $1', [location]);
         res.status(200).json(result.rows);
-    } catch (err){
+    } catch (err) {
         res.status(409).json({ error: err.message });
     }
 }
@@ -29,8 +29,19 @@ const getMusicEventsById = async (req, res) => {
     }
 }
 
+const getLocations = async (req, res) => {
+    try{
+        const result = await pool.query('SELECT DISTINCT location FROM events;');
+        const locations = result.rows.map(row => row.location);
+        res.status(200).json(locations);
+    } catch (err){
+        res.status(409).json({ error: err.message });
+    }
+}
+
 export default {
     getMusicEvents,
     getMusicEventsByLocation,
-    getMusicEventsById
+    getMusicEventsById,
+    getLocations
 }

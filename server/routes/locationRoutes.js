@@ -4,4 +4,6 @@ import locationController from '../controllers/locationController.js';
 
 const locationRouter = express.Router();
 
-router.get('/', locationController.getLocations);
+locationRouter.get('/', locationController.getLocations);
+
+export default locationRouter;
