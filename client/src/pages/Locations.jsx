@@ -4,10 +4,19 @@ import unitygrid from '../assets/unitygrid.jpg'
 import '../css/Locations.css'
 import { useNavigate } from 'react-router-dom';
 
+const imgs = {
+    "New York": "https://imgs.search.brave.com/pCgQ5CWmvHqNr9fsxpGqrHB8E3ImWptxh3UTcVgfEHg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvNDg2/MzM0NTEwL3Bob3Rv/L25ldy15b3JrLWNp/dHktc2t5bGluZS5q/cGc_cz02MTJ4NjEy/Jnc9MCZrPTIwJmM9/UmtjVWlFbVpZYXJC/UG5RVzhxbTdHVUpF/ZWdFMjRNb2xjbDJp/ak1sWTNrUT0",
+    "Chicago": "https://imgs.search.brave.com/mOHjrqqbotHchPuHIhgOtQmnrjiggHANZC-PXp29sx0/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzAzLzI0LzU4Lzcx/LzM2MF9GXzMyNDU4/NzE2OF9xcDNjcDlG/em5lRjZZMlRBeXF4/Y2Fyd3p2dDdybVc5/VC5qcGc",
+    "Seattle": "https://imgs.search.brave.com/FzYAtuM4EZ5adZxXJD4aQqbvo7II0tmqjWtISfyzRrw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMuZnJlZWltYWdl/cy5jb20vdmFyaWFu/dHMvZ21UMll2Q2Zy/VkJta2pMOVhqVk1K/cm96LzYyNGYwZGMx/ZGZmOWJkY2NhYjAz/MmY5M2MzM2U3OWRl/Nzg0ODE3NzBlNzll/MjFkM2IwNDY5ZGFm/NTFmMDI3OTc",
+    "Los Angeles": "https://imgs.search.brave.com/PleARGPZkrs1bj8t8JCcEAiQFTizfQFVojq-8iRJ9a0/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvODYy/NzAwMDY0L3Bob3Rv/L2xvcy1hbmdlbGVz/LXZpZXctdG8taG9s/bHl3b29kLmpwZz9z/PTYxMng2MTImdz0w/Jms9MjAmYz1wRGtH/WVVELTYtOFViSzVx/S1ZzM080bnY1bC00/T3pMd2JycnMwdmVN/TUFBPQ",
+    "Miami": "https://imgs.search.brave.com/b3Xn5OLUUP6zI7Ipv09b4Kthr2x-CkDG5HvkSEAneFM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvNTQz/ODY4NTE3L3Bob3Rv/L2Rvd250b3duLW1p/YW1pLXBlb3BsZS13/YWxraW5nLWFsb25n/LW1pYW1pLXJpdmVy/LmpwZz9zPTYxMng2/MTImdz0wJms9MjAm/Yz1NWURKX3NQYlR6/ZmQzUVQ5UXRtNVo0/c0haeEdLRlJPc1NW/NWtBZVpCMlc0PQ"
+}
+
 const Locations = () => {
 
     const navigate = useNavigate();
     const [locations, setLocations] = useState([])
+
 
     useEffect(() => {
         (async () => {
@@ -22,6 +31,13 @@ const Locations = () => {
             }
         }) ()
     }, [])
+
+    const handleSearch = (e) => {
+        const selectedLocation = e.target.value;
+        if (selectedLocation) {
+            navigate(`/locations/${selectedLocation}`);
+        }
+    }
 
     const setListeners = () => {
         const polygons = document.querySelectorAll('polygon')
@@ -40,15 +56,39 @@ const Locations = () => {
     }
 
     return (
-        <div className='available-locations'>
-            {locations.map((location, index) => (
-                <div key={index} className="card">
-                    <h3>{location}</h3>
-                    <button onClick={() => navigate(`/locations/${location}`)}>
-                        View Events at {location}
-                    </button>
-                </div>
-            ))}
+        <>
+            <div className='search-container'>
+                <select onChange={handleSearch} defaultValue="">
+                    <option value="" disabled>Search for a location...</option>
+                    <option value="Chicago">Chicago</option>
+                    <option value="New York">New York</option>
+                    <option value="Seattle">Seattle</option>
+                    <option value="Los Angeles">Los Angeles</option>
+                    <option value="Miami">Miami</option>
+                </select>
+            </div>
+
+            <div className='available-locations'>
+                {locations.map((location, index) => (
+                    <div key={index} className="location-card">
+                        <div className='location-image'>
+                            <img src={imgs[location]} alt={location}/>
+                        </div>
+                        <h3>{location}</h3>
+                        <button onClick={() => navigate(`/locations/${location}`)}>
+                            View Events at {location}
+                        </button>
+                    </div>
+                ))}
+            </div>
+        </>
+    )
+}
+
+export default Locations
+
+
+
             {/* <div id='venue1button' className='venue1-button-overlay'>
                 <button>{locationNames.location1}</button>
             </div>
@@ -85,8 +125,8 @@ const Locations = () => {
                 769,352 772,347 793,340 806,321 796.8,291 784,269 757,261 730,272 707,281 672,283 "/></a>
             </svg> */}
    
-        </div>
-    )
-}
+//         </div>
+//     )
+// }
 
-export default Locations
+// export default Locations
